@@ -1,6 +1,5 @@
 
-import * as React from 'react';
-import {Component} from 'react';
+import React, { Component } from 'react';
 import {StyleProp, View, ViewStyle, Text} from 'react-native';
 import {globalStyle} from '../style';
 
@@ -17,10 +16,12 @@ export class Button extends Component<IButtonProps> {
     return (
       <View
         {...otherProps}
-        style={[{
-          width: globalStyle.gap.n,
-        }, style]}
-      >
+        style={[
+          {
+            width: globalStyle.gap.n,
+          },
+          style,
+      ]}>
         <Text>Button</Text>
       </View>
     );
