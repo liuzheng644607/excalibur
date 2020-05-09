@@ -68,7 +68,7 @@ const HomeScreen: React.SFC<Props> = ({ navigation }) => {
           {
             Object.keys(demos).map((name) => {
             return (
-              <ListItem key={name} onPress={() => navigation.navigate(name)}><Text>{name}</Text></ListItem>)
+              <ListItem key={name} onPress={() => navigation.navigate(name)}>{name}</ListItem>)
             })
           }
       </ScrollView>
