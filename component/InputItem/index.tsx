@@ -1,6 +1,7 @@
 import React, { useState, useRef, Component } from 'react';
 import {View, StyleSheet, Animated, StyleProp, Text, Image, TextInput , TouchableHighlight, TouchableHighlightProps, TextInputProps, NativeEventEmitter, NativeSyntheticEvent, TextInputChangeEventData} from 'react-native';
 import ListItem from '../ListItem';
+import Input from './Input';
 
 type Props = {
   label?: React.ReactNode;
@@ -24,10 +25,11 @@ class FloatLabelInput extends Component<Props> {
 
   componentDidUpdate() {
     const { isFocused } = this.state;
-    if (this.props.labelType !== 'float') return;
+    const { label, labelType } = this.props;
+    if (labelType !== 'float' || !label) return;
     Animated.timing(this.animatedIsFocused, {
       toValue: (isFocused || this.value) ? 1 : 0,
-      duration: 200,
+      duration: 150,
       useNativeDriver: false,
     }).start();
   }
@@ -45,12 +47,17 @@ class FloatLabelInput extends Component<Props> {
       left: 0,
       top: this.animatedIsFocused.interpolate({
         inputRange: [0, 1],
-        outputRange: [-2, -22],
+        outputRange: [8, -10],
       }),
       fontSize: this.animatedIsFocused.interpolate({
         inputRange: [0, 1],
         outputRange: [20, 14],
       }),
+      backgroundColor: this.animatedIsFocused.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)'],
+      }),
+      zIndex: 10,
       color: this.animatedIsFocused.interpolate({
         inputRange: [0, 1],
         outputRange: ['#aaa', '#000'],
@@ -59,19 +66,19 @@ class FloatLabelInput extends Component<Props> {
     const { isFocused } = this.state;
     const labelText = <Text>{label}</Text>;
     const helperText = <Text style={styles.helperText}>{helper}</Text>;
-    const placeholderTextColor = labelType === 'float' ? isFocused ? undefined : 'rgba(0,0,0,0)' : undefined;
+    const placeholderTextColor = (labelType === 'float' && label) ? isFocused ? undefined : 'rgba(0,0,0,0)' : undefined;
     return (
       <ListItem
       arrow={false}
       align={otherProps.multiline ? 'top' : undefined}
       contentStyle={[styles.contentStyle, { width: 'auto' }]}
-      contentViewStyle={{ paddingBottom: 8, paddingTop: 28}}
+      contentViewStyle={{ paddingBottom: 8, paddingTop: label ? 18 : 8}}
       extra={(<>
         <View style={styles.inputContentWrap}>
-          <Animated.Text style={[styles.stackedLabelWrap, labelStyle]}>
+          <Animated.Text pointerEvents="none" style={[styles.stackedLabelWrap, labelStyle]}>
             {labelText}
           </Animated.Text>
-          <TextInput
+          <Input
             style={styles.input}
             placeholderTextColor={placeholderTextColor}
             {...otherProps}
@@ -102,16 +109,14 @@ const InputItem: React.SFC<Props> = (props) => {
     labelType = 'inline',
     ...otherProps
   } = props;
-  const [hasValue, setState] = useState(false);
+  const [textValue, setValue] = useState(props.defaultValue || props.value);
   const labelText = <Text style={[styles.label, labelType !== 'inline' ? styles.labelInline : {}]}>{label}</Text>
   const helperText = <Text style={styles.helperText}>{helper}</Text>;
-  let refInput = useRef<TextInput>();
   const onValueChange = (v: string) => {
-    // setState(!!v);
+    setValue(v);
   }
   const onClear = () => {
-    setState(false);
-    refInput?.current?.clear();
+    setValue('');
   }
 
   if (labelType !== 'inline') {
@@ -130,7 +135,7 @@ const InputItem: React.SFC<Props> = (props) => {
               {labelText}
             </View>
           ) : null}
-          <TextInput ref={refInput} style={styles.input} {...otherProps} onChangeText={onValueChange} />
+          <Input style={styles.input} value={textValue} {...otherProps} onChangeText={onValueChange} />
           {helper ? (
             <View style={styles.helperWrap}>
               {helperText}
@@ -138,7 +143,7 @@ const InputItem: React.SFC<Props> = (props) => {
           ) : null}
         </View>
         
-        {clear && hasValue ?
+        {clear && textValue ?
           <View style={styles.clearWrap} onTouchStart={onClear}>
             <Image
               source={require('../assets/clear.png')}
@@ -164,7 +169,9 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 17,
     paddingTop: 0,
+    minHeight: 44,
     paddingBottom: 0,
+    marginBottom: -8,
   },
   label: {
     fontSize: 17,
@@ -173,14 +180,17 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   helperWrap: {
-    marginTop: 8,
+    // marginTop: -8,
+    height: 14,
   },
   helperText: {
     fontSize: 12,
-    color: 'rgb(142, 142, 147)'
+    color: 'rgb(142, 142, 147)',
   },
   inlineLabelWrap: {
-    flex: 0.35
+    flex: 0.35,
+    height: 44,
+    justifyContent: 'center' 
   },
   stackedLabelWrap: {
     marginBottom: 10,

@@ -1,5 +1,5 @@
 export const demos = {
-  Button: () => require('../../component/Button/demo'),
-  ListItem: () => require('../../component/ListItem/demo'),
-  InputItem: () => require('../../component/InputItem/demo'),
+	Button: () => require('../../component/Button/demo'),
+	InputItem: () => require('../../component/InputItem/demo'),
+	ListItem: () => require('../../component/ListItem/demo'),
 };

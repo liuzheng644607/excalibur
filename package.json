@@ -6,6 +6,7 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
+    "new": "node ./script/genCode.js",
     "test": "jest",
     "lint": "eslint ."
   },

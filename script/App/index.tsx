@@ -10,14 +10,13 @@ import React from 'react';
 import {SafeAreaView, StyleSheet, ScrollView, View, Text} from 'react-native';
 import {NavigationContainer, RouteProp} from '@react-navigation/native';
 import {createStackNavigator, StackNavigationProp} from '@react-navigation/stack';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 import ListItem from '../../component/ListItem';
 import {demos} from './demos';
 
 type RootStackParamList = {
   Home: undefined;
   Detail: undefined;
-}
+} & typeof demos
 
 type HomeScreenRouteProp = RouteProp<RootStackParamList, 'Home'>;
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
@@ -77,7 +76,8 @@ const HomeScreen: React.SFC<Props> = ({ navigation }) => {
 };
 
 const App: React.SFC<{}> = () => {
-  const s = Object.keys(demos).map((name) => {
+  const s = Object.keys(demos).map((n) => {
+    const name = n as keyof RootStackParamList;
     return (
       <Stack.Screen
         key={name}

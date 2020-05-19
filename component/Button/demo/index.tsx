@@ -1,14 +1,18 @@
-
-import * as React from 'react';
-import {Component} from 'react';
-import {Button} from '../index';
+import React, {Component} from 'react';
+import Button from '../index';
 
 export class Default extends Component {
-  static doc = `Demo描述文档`;
+  static doc = '描述文档';
 
   render() {
     return (
-      <Button />
+      <>
+       <Button onPress={() => {}}/>
+       <Button fill onPress={() => {}}/>
+       <Button outline onPress={() => {}}/>
+       <Button round fill onPress={() => {}}/>
+       <Button round raised onPress={() => {}}/>
+      </>
     );
   }
 }

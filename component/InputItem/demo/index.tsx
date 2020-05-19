@@ -3,6 +3,7 @@ import * as React from 'react';
 import {Component} from 'react';
 import { Text } from 'react-native';
 import InputItem from '../index';
+import Input from '../Input';
 
 export class Default extends Component {
   static doc = `基本`;
@@ -10,7 +11,7 @@ export class Default extends Component {
   render() {
     return (
       <>
-        <InputItem label="Name" placeholder="Your Name" />
+        <InputItem defaultValue="12" label="Name" clear placeholder="Your Name" />
         <InputItem label="Password" secureTextEntry placeholder="Your Password" />
         <InputItem label="E-mail" placeholder="Your e-mail" />
         <InputItem label="URL" placeholder="URL" />
@@ -42,9 +43,38 @@ export class Default1 extends Component {
     return (
       <>
         <InputItem label="Password，Please type Password" labelType="float" clear />
+        <InputItem labelType="float" placeholder="Your Name" clear />
+        <InputItem label="Textarea" multiline labelType="float" placeholder="Your Password" clear />
+        <InputItem label="e-mail" labelType="float" placeholder="e-mail" clear />
+      </>
+    );
+  }
+}
+
+export class Default3 extends Component {
+  static doc = `浮动 label`;
+
+  render() {
+    return (
+      <>
+        <InputItem label="Password，Please type Password" labelType="float" clear />
         <InputItem label="Name" clearButtonMode="always" helper="Full name please" labelType="float" placeholder="Your Name" clear />
         <InputItem label="Textarea" multiline labelType="float" placeholder="Your Password" clear />
         <InputItem label="e-mail" helper="Your work e-mail address" labelType="float" placeholder="e-mail" clear />
+      </>
+    );
+  }
+}
+
+export class Default4 extends Component {
+  static doc = `Input`;
+
+  render() {
+    return (
+      <>
+        <Input />
+        <Input bordered clearButtonMode="always" />
+        <Input bordered multiline />
       </>
     );
   }
